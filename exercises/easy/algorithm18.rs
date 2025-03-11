@@ -13,9 +13,52 @@
 
 use std::fmt::{self, Display, Formatter};
 
-pub fn merge_intervals(intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
+pub fn merge_intervals(mut intervals: Vec<Vec<i32>>) -> Vec<Vec<i32>> {
     // TODO: Implement the logic to merge overlapping intervals
-    Vec::new() // Placeholder return value
+    let row_len = intervals.len();
+    let col_len = intervals[0].len();
+
+    intervals.sort_unstable();
+    let mut result: Vec<Vec<i32>> = Vec::new();
+
+    let mut index_m = 0;
+    let mut index_n = 1;
+    while index_n < row_len {
+        let mut item_temp = Vec::new();
+        let row_m = intervals[index_m].clone();
+        let row_n = intervals[index_n].clone();
+        if row_n[0] >= row_m[0] && row_n[0] <= row_m[col_len - 1] {
+            item_temp.push(row_m[0]);
+            if row_n[col_len - 1] <= row_m[col_len - 1] {
+                item_temp.push(row_m[col_len - 1]);
+                index_n += 1;
+            } else {
+                item_temp.push(row_n[col_len - 1]);
+                index_m += 2;
+                index_n += 2;
+            }
+
+            if !result.contains(&item_temp) {
+                result.push(item_temp);
+            }
+
+            if index_m == row_len - 1 {
+                result.push(intervals[row_len - 1].clone());
+            }
+        } else {
+            item_temp = row_m;
+            index_m += 1;
+            index_n += 1;
+
+            result.push(item_temp);
+    
+            if index_n == row_len {
+                result.push(intervals[row_len - 1].clone());
+            }
+        }
+    }
+
+    result
 }
 
 #[cfg(test)]

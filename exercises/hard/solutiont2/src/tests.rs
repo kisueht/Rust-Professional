@@ -4,7 +4,7 @@ mod prime_factor;
 #[cfg(test)]
 mod tests {
     use super::prime_factor::find_max_prime_factor;
-    use std::time::{Instant, Duration};
+    use std::time::{Duration, Instant};
 
     // 定义测试用例和预期结果
     const TEST_CASES: &[(u128, u128)] = &[
@@ -15,7 +15,7 @@ mod tests {
         (96008514751430, 223275615701),
         (99999999951437, 5218879),
         (1199999999951437, 3945019577),
-        (9999999999999951437,387792298444951),
+        (9999999999999951437, 387792298444951),
         (97993999919999958437, 203729729563409477),
         (199999999999999951437, 9523809523809521497),
     ];
@@ -30,6 +30,7 @@ mod tests {
             let duration = start.elapsed();
 
             // 时间超3s，判定不合格
+            println!("{}-{}-{}", duration.as_micros(), result, expected);
             if duration <= Duration::new(3, 0) && result == *expected {
                 total_score += 10.0;
             }

@@ -5,9 +5,49 @@
 */
 
 
-fn sort<T>(array: &mut [T]){
+fn sort<T>(array: &mut [T])
+where
+    T: Ord + Clone,
+{
 	//TODO
+    insertion_sort(array);
 }
+
+/**
+ * 插入排序
+ */
+fn insertion_sort<T>(array: &mut [T]) 
+where
+    T: Ord + Clone,
+{
+    for i in 1..array.len() {
+        let curr = array[i].clone();
+        let mut j = i;
+        while j > 0 && array[j - 1] > curr {
+            array[j] = array[j - 1].clone();
+            j -= 1;
+        }
+        array[j] = curr;
+    }
+}
+
+/**
+ * 冒泡排序
+ */
+fn bubble_sort<T>(array: &mut [T]) 
+where
+    T: Ord,
+{
+    let len = array.len();
+    for i in 0..len {
+        for j in 0..(len - i - 1) {
+            if array[j] > array[j + 1] {
+                array.swap(j, j + 1);
+            }
+        }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

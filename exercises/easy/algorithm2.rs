@@ -74,6 +74,28 @@ impl<T> LinkedList<T> {
     }
 	pub fn reverse(&mut self){
 		// TODO
+        let mut curr_node = self.start.clone();
+
+        let ll_length = self.length as i32;
+        for i in 0..ll_length {
+            if let Some(node) = curr_node {
+                unsafe {
+                    let node_tmp = (*node.as_ptr()).next.clone();
+                    if 0 == i {
+                        (*node.as_ptr()).next = None;
+                    } else {
+                        (*node.as_ptr()).next = (*node.as_ptr()).prev.clone();
+                    }
+                    (*node.as_ptr()).prev = node_tmp;
+
+                    curr_node = node_tmp.clone();
+                };
+            }
+        }
+
+        let ll_node_tmp = self.start.clone();
+        self.start = self.end;
+        self.end = ll_node_tmp;
 	}
 }
 

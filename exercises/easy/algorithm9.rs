@@ -18,7 +18,7 @@ where
 
 impl<T> Heap<T>
 where
-    T: Default,
+    T: Default + Ord,
 {
     pub fn new(comparator: fn(&T, &T) -> bool) -> Self {
         Self {
@@ -38,6 +38,25 @@ where
 
     pub fn add(&mut self, value: T) {
         //TODO
+        self.items.insert(self.len() + 1, value); //将值出入末尾
+        self.count += 1;
+
+        let mut c = self.len();
+        loop {
+            let p_idx = self.parent_idx(c);
+            if p_idx <= 0 {
+                break;
+            }
+
+            let curr = &self.items[c];
+            let parent = &self.items[p_idx];
+            if (self.comparator)(curr, parent) {
+                // 将节点值与父节点值比较交换
+                self.items.swap(c, p_idx);
+            }
+
+            c = p_idx;
+        }
     }
 
     fn parent_idx(&self, idx: usize) -> usize {
@@ -58,7 +77,14 @@ where
 
     fn smallest_child_idx(&self, idx: usize) -> usize {
         //TODO
-		0
+		let (lc, rc) = (self.left_child_idx(idx), self.right_child_idx(idx));
+        if rc > self.len() {
+            lc
+        } else if self.items[lc] < self.items[rc] {
+            lc
+        } else {
+            rc
+        }
     }
 }
 
@@ -85,7 +111,12 @@ where
 
     fn next(&mut self) -> Option<T> {
         //TODO
-		None
+		if self.count == 0 {
+            None
+        } else {
+            self.count -= 1;
+            Some(self.items.remove(1))
+        }
     }
 }
 

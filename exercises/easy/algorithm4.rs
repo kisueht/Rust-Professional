@@ -51,12 +51,44 @@ where
     // Insert a value into the BST
     fn insert(&mut self, value: T) {
         //TODO
+        let curr_node = &mut self.root;
+        if let Some(root) = curr_node {
+            root.insert(value);
+        } else {
+            *curr_node = Some(Box::new(TreeNode::new(value)));
+        }
     }
 
     // Search for a value in the BST
-    fn search(&self, value: T) -> bool {
+    fn search(&self, value: T) -> bool 
+    where
+        T: Clone,
+    {
         //TODO
-        true
+        self.pre_search(&self.root, value)
+    }
+
+    /**
+     * 前序查找
+     */
+    fn pre_search(&self, node: &Option<Box<TreeNode<T>>>, value: T) -> bool 
+    where
+        T: Clone,
+    {
+        while let Some(node) = node {
+            if value == node.value {
+                return true;
+            } else {
+                let left_b = self.pre_search(&node.left, value.clone());
+                if left_b {
+                    return left_b;
+                } else {
+                    return self.pre_search(&node.right, value.clone());
+                }
+            }
+        }
+
+        false
     }
 }
 
@@ -67,6 +99,21 @@ where
     // Insert a node into the tree
     fn insert(&mut self, value: T) {
         //TODO
+        if value != self.value {// 避免重复数据插入
+            if value < self.value {
+                if let Some(tn_left) = &mut self.left {
+                    tn_left.insert(value);
+                } else {
+                    self.left = Some(Box::new(TreeNode::new(value)));
+                }
+            } else {
+                if let Some(tn_right) = &mut self.right {
+                    tn_right.insert(value);
+                } else {
+                    self.right = Some(Box::new(TreeNode::new(value)));
+                }
+            }
+        }
     }
 }
 

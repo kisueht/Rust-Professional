@@ -13,7 +13,21 @@ use std::fmt::{self, Display, Formatter};
 
 pub fn is_palindrome(s: String) -> bool {
     // TODO: Implement the logic to check if the string is a palindrome
-    false // Placeholder return value
+    let mut is_pal = true;
+    let non_alphabetical= &['\'', ',', '.', '?', '!', ' '];
+    let mut s_c: Vec<char> = s.to_lowercase().chars().filter(|c| !non_alphabetical.contains(c)).collect();
+    
+    while s_c.len() > 0 && is_pal {
+        let h = s_c.remove(0);
+        let r = s_c.pop();
+        if let Some(value) = r {
+            if h != value {
+                is_pal = false;
+            }
+        }
+    }
+
+    is_pal
 }
 
 #[cfg(test)]
