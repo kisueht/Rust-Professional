@@ -147,15 +147,15 @@
     },
     {
       "name": "solutiont5",
-      "result": false,
-      "score": 0
+      "result": true,
+      "score": 10
     }
   ],
   "statistics": {
     "total_exercises": 30,
-    "total_successes": 29,
-    "total_failures": 1,
-    "total_score": 90,
-    "total_time": 32
+    "total_successes": 30,
+    "total_failures": 0,
+    "total_score": 100,
+    "total_time": 35
   }
 }
